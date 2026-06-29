@@ -1,0 +1,31 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import { VitePWA } from 'vite-plugin-pwa'
+
+export default defineConfig({
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['icon.svg'],
+      manifest: {
+        name: '旅行典藏 Travel Archive',
+        short_name: '旅行典藏',
+        description: '將旅行照片製作成可長期收藏的護照風格作品。',
+        theme_color: '#071725',
+        background_color: '#171615',
+        display: 'standalone',
+        orientation: 'portrait',
+        start_url: '/',
+        lang: 'zh-TW',
+        icons: [
+          { src: '/icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any maskable' }
+        ]
+      },
+      workbox: {
+        navigateFallback: '/index.html',
+        globPatterns: ['**/*.{js,css,html,svg,png,jpg,jpeg,webp}']
+      }
+    })
+  ]
+})
