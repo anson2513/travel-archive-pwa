@@ -255,7 +255,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   .toolbar-actions .primary-button { padding-inline: 12px; }
   .toolbar-actions .primary-button svg { display: none; }
   .editor-workspace { display: block; }
-  .preview-column { position: relative; top: 0; height: 56vh; min-height: 430px; padding: 14px 18px 12px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .preview-column { position: relative; top: 0; height: 740px; min-height: 740px; padding: 14px 18px 12px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .preview-column .canvas-stage { place-items: start center; padding-top: 8px; }
   .form-column { height: auto; min-height: 600px; display: block; }
   .editor-tabs { position: sticky; top: 118px; z-index: 12; background: rgba(20,22,21,.96); backdrop-filter: blur(15px); }
   .form-scroll { overflow: visible; }
@@ -279,7 +280,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   .toolbar-left > div { max-width: 110px; }
   .toolbar-left strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .toolbar-actions .primary-button { min-height: 38px; font-size: 11px; }
-  .preview-column { height: 53vh; min-height: 390px; }
+  .preview-column { height: 710px; min-height: 710px; }
   .preview-meta { gap: 8px; }
   .preview-meta span:nth-child(2) { display: none; }
   .editor-tabs { padding-inline: 6px; }

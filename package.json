@@ -10,12 +10,15 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.2.11",
+    "@fontsource/ibm-plex-sans-condensed": "^5.2.8",
+    "@fontsource/space-mono": "^5.2.9",
     "@vitejs/plugin-react": "latest",
     "lucide-react": "latest",
-    "vite": "latest",
-    "vite-plugin-pwa": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "vite": "latest",
+    "vite-plugin-pwa": "latest"
   },
   "devDependencies": {
     "@eslint/js": "latest",

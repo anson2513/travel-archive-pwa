@@ -14,6 +14,9 @@ const IVORY = '#d8c7ae'
 const RED = '#a43e35'
 const BLUE = '#58789a'
 const NAVY = '#071725'
+const DISPLAY_FONT = '"Cormorant Garamond", Georgia, serif'
+const SANS_FONT = '"IBM Plex Sans Condensed", Arial, sans-serif'
+const MONO_FONT = '"Space Mono", "Courier New", monospace'
 
 function upper(value: string, fallback: string) {
   return (value.trim() || fallback).toUpperCase()
@@ -92,8 +95,12 @@ function dateForStamp(value: string) {
 function ticketPath() {
   const path = new Path2D()
   path.roundRect(INSET, INSET, W - INSET * 2, H - INSET * 2, 34)
+  path.moveTo(INSET + 38, STUB_Y)
   path.arc(INSET, STUB_Y, 38, 0, Math.PI * 2)
+  path.closePath()
+  path.moveTo(W - INSET + 38, STUB_Y)
   path.arc(W - INSET, STUB_Y, 38, 0, Math.PI * 2)
+  path.closePath()
   return path
 }
 
@@ -137,14 +144,14 @@ function drawPlaceholder(ctx: CanvasRenderingContext2D, x: number, y: number, wi
   }
   ctx.fillStyle = 'rgba(216,199,174,.72)'
   ctx.textAlign = 'center'
-  ctx.font = '600 22px Arial, sans-serif'
+  ctx.font = `600 22px ${SANS_FONT}`
   drawTrackedText(ctx, 'SELECT A PHOTO', x + width / 2 - 105, y + height / 2, 4)
   ctx.textAlign = 'left'
 }
 
 function drawHeader(ctx: CanvasRenderingContext2D, entry: ArchiveEntry, landscape: boolean) {
   ctx.fillStyle = IVORY
-  ctx.font = '500 17px Arial, sans-serif'
+  ctx.font = `500 17px ${SANS_FONT}`
   drawTrackedText(ctx, 'TRAVEL ARCHIVE COLLECTION', 68, 78, 5)
   ctx.strokeStyle = 'rgba(216,199,174,.5)'
   ctx.lineWidth = 1
@@ -154,23 +161,23 @@ function drawHeader(ctx: CanvasRenderingContext2D, entry: ArchiveEntry, landscap
   ctx.stroke()
 
   ctx.fillStyle = RED
-  ctx.font = '600 18px Arial, sans-serif'
+  ctx.font = `600 18px ${SANS_FONT}`
   drawTrackedText(ctx, `No.${String(entry.archiveNo).padStart(3, '0')}`, 895, 78, 3)
   ctx.fillStyle = IVORY
-  ctx.font = '500 15px Arial, sans-serif'
+  ctx.font = `500 15px ${SANS_FONT}`
   drawTrackedText(ctx, 'PASSPORT EDITION', 785, 116, 4)
 
   const city = upper(entry.cityEn, 'CITY')
-  const citySize = fitText(ctx, city, 635, landscape ? 102 : 112, 58, 'Georgia, serif')
-  ctx.font = `${citySize}px Georgia, serif`
+  const citySize = fitText(ctx, city, 635, landscape ? 110 : 120, 62, DISPLAY_FONT)
+  ctx.font = `600 ${citySize}px ${DISPLAY_FONT}`
   ctx.fillStyle = IVORY
   ctx.fillText(city, 64, landscape ? 225 : 235)
-  ctx.font = '500 25px Arial, sans-serif'
+  ctx.font = `500 25px ${SANS_FONT}`
   drawTrackedText(ctx, 'CITY ARCHIVE', 68, landscape ? 270 : 282, 8)
   if (landscape) {
     ctx.strokeStyle = 'rgba(216,199,174,.65)'
     ctx.strokeRect(68, 294, 260, 40)
-    ctx.font = '600 13px Arial, sans-serif'
+    ctx.font = `600 13px ${SANS_FONT}`
     drawTrackedText(ctx, 'LANDSCAPE ARCHIVE', 88, 320, 3)
   }
 }
@@ -190,9 +197,9 @@ function drawArrivalStamp(ctx: CanvasRenderingContext2D, entry: ArchiveEntry, x:
   ctx.arc(0, 0, radius - 11, 0, Math.PI * 2)
   ctx.stroke()
   ctx.textAlign = 'center'
-  ctx.font = `600 ${Math.max(12, radius * 0.16)}px Arial, sans-serif`
+  ctx.font = `600 ${Math.max(12, radius * 0.16)}px ${SANS_FONT}`
   ctx.fillText('IMMIGRATION', 0, -radius * 0.45)
-  ctx.font = `600 ${Math.max(14, radius * 0.18)}px Arial, sans-serif`
+  ctx.font = `600 ${Math.max(14, radius * 0.18)}px ${SANS_FONT}`
   ctx.fillText(dateForStamp(entry.arrivalDate), 0, -3)
   ctx.fillText('ARRIVED', 0, radius * 0.28)
   ctx.fillText(upper(entry.countryEn, 'COUNTRY'), 0, radius * 0.55)
@@ -217,15 +224,15 @@ function drawDepartureStamp(ctx: CanvasRenderingContext2D, entry: ArchiveEntry, 
   ctx.closePath()
   ctx.stroke()
   ctx.textAlign = 'center'
-  ctx.font = '600 19px Georgia, serif'
+  ctx.font = `600 19px ${DISPLAY_FONT}`
   ctx.fillText(upper(entry.cityEn, 'CITY'), 0, -39)
-  ctx.font = '600 12px Arial, sans-serif'
+  ctx.font = `600 12px ${SANS_FONT}`
   ctx.fillText(upper(entry.countryEn, 'COUNTRY'), 0, -11)
   ctx.beginPath()
   ctx.moveTo(-size * 0.68, 7)
   ctx.lineTo(size * 0.68, 7)
   ctx.stroke()
-  ctx.font = '600 14px Arial, sans-serif'
+  ctx.font = `600 14px ${SANS_FONT}`
   ctx.fillText(dateForStamp(entry.departureDate), 0, 36)
   ctx.fillText('DEPARTED', 0, 64)
   ctx.restore()
@@ -233,11 +240,11 @@ function drawDepartureStamp(ctx: CanvasRenderingContext2D, entry: ArchiveEntry, 
 
 function drawMetaField(ctx: CanvasRenderingContext2D, label: string, value: string, x: number, y: number, width: number) {
   ctx.fillStyle = RED
-  ctx.font = '600 13px Arial, sans-serif'
+  ctx.font = `600 13px ${SANS_FONT}`
   drawTrackedText(ctx, label, x, y, 2.5)
   ctx.fillStyle = IVORY
-  const size = fitText(ctx, value || '—', width, 22, 15, 'Georgia, serif')
-  ctx.font = `${size}px Georgia, serif`
+  const size = fitText(ctx, value || '—', width, 22, 15, DISPLAY_FONT)
+  ctx.font = `500 ${size}px ${DISPLAY_FONT}`
   ctx.fillText(value || '—', x, y + 39)
   ctx.strokeStyle = 'rgba(216,199,174,.45)'
   ctx.setLineDash([4, 5])
@@ -301,11 +308,11 @@ function drawLandscapeContent(ctx: CanvasRenderingContext2D, entry: ArchiveEntry
   ] as const
   for (const [label, value, x, width] of fields) {
     ctx.fillStyle = RED
-    ctx.font = '600 12px Arial, sans-serif'
+    ctx.font = `600 12px ${SANS_FONT}`
     drawTrackedText(ctx, label, x, metaY, 2)
     ctx.fillStyle = IVORY
-    const size = fitText(ctx, value, width, 18, 13, 'Georgia, serif')
-    ctx.font = `${size}px Georgia, serif`
+    const size = fitText(ctx, value, width, 18, 13, DISPLAY_FONT)
+    ctx.font = `500 ${size}px ${DISPLAY_FONT}`
     ctx.fillText(value, x, metaY + 39)
   }
 
@@ -370,28 +377,28 @@ function drawStub(ctx: CanvasRenderingContext2D, entry: ArchiveEntry) {
   ctx.stroke()
 
   ctx.fillStyle = RED
-  ctx.font = '600 25px Arial, sans-serif'
+  ctx.font = `600 25px ${SANS_FONT}`
   const route = `${upper(entry.origin, 'ORG')}  ▸  ${upper(entry.destination, 'DST')}`
   ctx.fillText(route, 140, 1637)
   ctx.fillStyle = IVORY
-  ctx.font = '30px Georgia, serif'
+  ctx.font = `600 30px ${DISPLAY_FONT}`
   ctx.fillText(upper(entry.flight, 'FLIGHT'), 140, 1678)
   ctx.fillStyle = RED
-  ctx.font = '600 13px Arial, sans-serif'
+  ctx.font = `600 13px ${SANS_FONT}`
   drawTrackedText(ctx, 'SEAT', 60, 1748, 3)
   ctx.fillStyle = IVORY
-  ctx.font = '30px Georgia, serif'
+  ctx.font = `600 30px ${DISPLAY_FONT}`
   ctx.fillText(upper(entry.seat, '—'), 140, 1750)
   ctx.strokeStyle = 'rgba(216,199,174,.35)'
   ctx.strokeRect(62, 1608, 55, 55)
-  ctx.font = '28px Arial, sans-serif'
+  ctx.font = `28px ${SANS_FONT}`
   ctx.fillText('✈', 75, 1646)
 
   ctx.fillStyle = RED
-  ctx.font = '600 15px Arial, sans-serif'
+  ctx.font = `600 15px ${SANS_FONT}`
   drawTrackedText(ctx, 'TRAVEL MEMORIES', 445, 1638, 3)
   ctx.fillStyle = IVORY
-  ctx.font = '22px "Courier New", monospace'
+  ctx.font = `22px ${MONO_FONT}`
   const memory = entry.memoryEn || 'Collect moments,\nnot things.'
   const lines = wrapText(ctx, memory, 350, 4)
   lines.forEach((line, index) => ctx.fillText(line, 445, 1692 + index * 37))
@@ -401,7 +408,7 @@ function drawStub(ctx: CanvasRenderingContext2D, entry: ArchiveEntry) {
   ctx.save()
   ctx.translate(995, 1785)
   ctx.rotate(-Math.PI / 2)
-  ctx.font = '600 11px Arial, sans-serif'
+  ctx.font = `600 11px ${SANS_FONT}`
   drawTrackedText(ctx, barcodeValue, 0, 0, 2)
   ctx.restore()
 
@@ -411,10 +418,10 @@ function drawStub(ctx: CanvasRenderingContext2D, entry: ArchiveEntry) {
   ctx.lineTo(1020, 1828)
   ctx.stroke()
   ctx.fillStyle = IVORY
-  ctx.font = '500 14px Arial, sans-serif'
+  ctx.font = `500 14px ${SANS_FONT}`
   drawTrackedText(ctx, 'KEEP THIS MOMENT', 427, 1870, 4)
   ctx.fillStyle = 'rgba(216,199,174,.7)'
-  ctx.font = '18px Arial, sans-serif'
+  ctx.font = `18px ${SANS_FONT}`
   ctx.fillText('‹ ‹ ‹ ‹ ‹ ‹ ‹', 62, 1872)
   ctx.fillText('› › › › › › ›', 880, 1872)
 }
@@ -429,7 +436,7 @@ function drawSafeZone(ctx: CanvasRenderingContext2D) {
   ctx.strokeRect(18, 250, W - 36, H - 500)
   ctx.setLineDash([])
   ctx.fillStyle = 'rgba(255,220,210,.9)'
-  ctx.font = '600 13px Arial, sans-serif'
+  ctx.font = `600 13px ${SANS_FONT}`
   ctx.fillText('INSTAGRAM 安全區', 38, 278)
   ctx.restore()
 }

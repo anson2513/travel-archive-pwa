@@ -105,6 +105,7 @@ function App() {
   const [image, setImage] = useState<HTMLImageElement | null>(null)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [safeZone, setSafeZone] = useState(settings.showSafeZoneByDefault)
+  const [fontsReady, setFontsReady] = useState(false)
   const [savedState, setSavedState] = useState<'saved' | 'saving'>('saved')
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -114,6 +115,14 @@ function App() {
     () => Math.max(0, ...entries.map(entry => entry.archiveNo)) + 1,
     [entries],
   )
+
+  useEffect(() => {
+    let active = true
+    document.fonts.ready.then(() => {
+      if (active) setFontsReady(true)
+    })
+    return () => { active = false }
+  }, [])
 
   useEffect(() => {
     let active = true
@@ -139,9 +148,9 @@ function App() {
   }, [draft?.photoId])
 
   useEffect(() => {
-    if (!draft || !canvasRef.current) return
+    if (!draft || !canvasRef.current || !fontsReady) return
     renderPassport(canvasRef.current, draft, image, { showSafeZone: safeZone })
-  }, [draft, image, safeZone])
+  }, [draft, image, safeZone, fontsReady])
 
   useEffect(() => {
     if (!draft) return
@@ -276,6 +285,7 @@ function App() {
   async function exportImage(kind: 'instagram' | 'archive') {
     if (!draft) return
     saveNow()
+    await document.fonts.ready
     const canvas = document.createElement('canvas')
     const scale = kind === 'archive' ? 2 : 1
     renderPassport(canvas, draft, image, { scale, showSafeZone: false })
