@@ -1,0 +1,1 @@
+{"name":"旅行典藏 Travel Archive","short_name":"旅行典藏","description":"將旅行照片製作成可長期收藏的護照風格作品。","start_url":"/travel-archive-pwa/","display":"standalone","background_color":"#171615","theme_color":"#071725","lang":"zh-TW","scope":"/travel-archive-pwa/","orientation":"portrait","icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
